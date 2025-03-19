@@ -1,10 +1,11 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 from utils.model_mixins import BaseModel
+from ckeditor.fields import RichTextField
 
 # Create your models here.
 
-class MenuItems(BaseModel):
+class MenuItem(BaseModel):
     HEADER = 'header'
     FOOTER = 'footer'
     SIDEBAR = 'sidebar'
@@ -32,12 +33,19 @@ class Category(BaseModel):
     class Meta:
         verbose_name_plural = 'Categories'
 
+class Author(BaseModel):
+    user = models.OneToOneField(User, on_delete=models.PROTECT)
+    image = models.ImageField(upload_to='images/author/', null=True, blank=True)
+
+    def __str__(self):
+        return self.user.username
+
 class Article(BaseModel):
     title = models.CharField(max_length=255)
-    content = models.TextField()
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    content = RichTextField()
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True, related_name='articles')
     featured_image = models.ImageField(upload_to='images/')
-    # author = models.CharField(max_length=100)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
 
 
     def __str__(self):

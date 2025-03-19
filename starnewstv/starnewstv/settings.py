@@ -26,9 +26,6 @@ SECRET_KEY = "django-insecure-)=je%bor@lf_c7@+nv@*-d_^$1fy05u2+p#mi(166v2vgzb%5o
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -40,10 +37,13 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "django_filters",
-    "store",
+    "corsheaders",
+    "ckeditor",
+    "article",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -54,6 +54,26 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "starnewstv.urls"
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # React frontend
+    "https://recon-front.sthajeevan.com.np",
+]
+CORS_ALLOW_METHODS = [
+    "GET",
+    "POST",
+    "PUT",
+    "DELETE",
+    "OPTIONS",
+]
+
+CORS_ALLOW_HEADERS = [
+    "content-type",
+    "authorization",
+    "accept",
+    "accept-language",
+]
+
+CORS_ALLOW_ALL_ORIGINS = True  # Use this for development only
 
 TEMPLATES = [
     {
@@ -125,10 +145,13 @@ MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 REST_FRAMEWORK = {
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    # "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "COERCE_DECIMAL_TO_STRING": False,
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
-    "PAGE_SIZE": 10,
 }
+
+ALLOWED_HOSTS = ["*"]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

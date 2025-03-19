@@ -11,7 +11,7 @@ admin.site.index_title = "Welcome to StarNews Admin Portal"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("store.urls")),
+    path("", include("article.urls")),
 
 ]
 

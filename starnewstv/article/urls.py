@@ -7,6 +7,7 @@ admin.site
 router = DefaultRouter()
 
 router.register("menuitems", views.MenuItemsViewSet, basename="menuitems")
+router.register("authors", views.AuthorViewSet, basename="authors")
 router.register("articles", views.ArticleViewSet, basename="articles")
 router.register("categories", views.CategoryViewSet, basename="categories")
 router.register("contacts", views.ContactViewSet, basename="contacts")
