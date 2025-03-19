@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from utils.model_mixins import BaseModel
 from ckeditor.fields import RichTextField
+from django.conf import settings
 
 # Create your models here.
 
@@ -34,11 +35,13 @@ class Category(BaseModel):
         verbose_name_plural = 'Categories'
 
 class Author(BaseModel):
-    user = models.OneToOneField(User, on_delete=models.PROTECT)
+    name = models.CharField(max_length=100)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     image = models.ImageField(upload_to='images/author/', null=True, blank=True)
+    phone = models.CharField(max_length=10)
 
     def __str__(self):
-        return self.user.username
+        return self.name
 
 class Article(BaseModel):
     title = models.CharField(max_length=255)

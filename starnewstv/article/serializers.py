@@ -23,7 +23,7 @@ class AuthorSerializer(BaseModelSerializer):
     user = serializers.StringRelatedField()
     class Meta:
         model = Author
-        fields = ["idx", "user", "image"]
+        fields = ["idx", "name", "user", "phone", "image"]
 
     def get_user(self, obj):
         return obj.user.username
@@ -39,7 +39,7 @@ class ArticleSerializer(BaseModelSerializer):
         return obj.category.name
 
     def get_author(self, obj):
-        return obj.author.user.username
+        return obj.author.name
     
 
 class ArticleDetailSerializer(ArticleSerializer):

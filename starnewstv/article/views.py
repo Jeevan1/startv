@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from article.pagination import DefaultPagination
-from article.permissions import IsAdmin, IsAdminOrAuthor
+from article.permissions import IsAdmin, IsAdminOrAuthor, IsAuthor
 from .filters import ArticleFilter, MenuItemFilter
 from rest_framework.mixins import  CreateModelMixin
 from utils.api_mixins import BaseAPIMixin
@@ -16,6 +16,7 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import MenuItem
 from .filters import MenuItemFilter
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 class MenuItemsViewSet( BaseAPIMixin,ModelViewSet):
     queryset = MenuItem.objects.all()
@@ -58,10 +59,11 @@ class CategoryViewSet(BaseAPIMixin,ModelViewSet):
 class AuthorViewSet(BaseAPIMixin,ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
+    authentication_classes = [JWTAuthentication]
 
     def get_permissions(self):
         if self.action in ("create", "update", "partial_update", "destroy"):
-            return [IsAdmin()]
+            return [IsAdminOrAuthor()]
 
         return super().get_permissions()
 
@@ -73,6 +75,7 @@ class ArticleViewSet(BaseAPIMixin, ModelViewSet):
     search_fields = ["title", "content"]
     pagination_class = DefaultPagination
     ordering_fields = ["created_at"]
+    authentication_classes = [JWTAuthentication]
 
     permission_classes = [AllowAny]
 
